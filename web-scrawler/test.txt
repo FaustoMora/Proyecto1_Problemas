@@ -1,0 +1,151 @@
+['http://www.eluniverso.com/servicios/archivo/2015/06/30']
+'ascii' codec can't encode character u'\xed' in position 59: ordinal not in range(128)
+'ascii' codec can't encode character u'\xed' in position 19: ordinal not in range(128)
+Dos ferias empiezan y encienden los eventos por festejo octubrino
+http://www.eluniverso.comhttp://www.eluniverso.com/noticias/2015/10/07/nota/5170016/dos-ferias-empiezan-encienden-eventos-festejo-octubrino?src=menu
+21h48
+
+
+'ascii' codec can't encode character u'\xf3' in position 19: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 30: ordinal not in range(128)
+'ascii' codec can't encode character u'\xed' in position 48: ordinal not in range(128)
+Jaime Nebot dice que ni es evasor ni se ha enriquecido en su cargo
+http://www.eluniverso.com/noticias/2015/06/30/nota/4993800/nebot-dice-que-ni-es-evasor-ni-se-ha-enriquecido-su-cargo
+21h48
+
+
+Que Gina Godoy se disculpe con Quito pide Rodas
+http://www.eluniverso.com/noticias/2015/06/30/nota/4993794/que-godoy-se-disculpe-quito-pide-rodas
+21h48
+
+
+'ascii' codec can't encode character u'\xe1' in position 56: ordinal not in range(128)
+'ascii' codec can't encode character u'\xe1' in position 21: ordinal not in range(128)
+'ascii' codec can't encode character u'\xe1' in position 19: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 8: ordinal not in range(128)
+'ascii' codec can't encode character u'\xe9' in position 1: ordinal not in range(128)
+'ascii' codec can't encode character u'\xed' in position 10: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 53: ordinal not in range(128)
+'ascii' codec can't encode character u'\xbf' in position 0: ordinal not in range(128)
+'ascii' codec can't encode character u'\xfa' in position 19: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 20: ordinal not in range(128)
+Flexibilizar Ley de Herencias ofrece Rafael Correa
+http://www.eluniverso.com/noticias/2015/06/30/nota/4993734/flexibilizar-ley-herencias-ofrece-correa
+21h48
+
+
+'ascii' codec can't encode character u'\xed' in position 39: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 16: ordinal not in range(128)
+Llegada del papa Francisco ha inspirado estas canciones
+http://www.eluniverso.com/noticias/2015/06/30/nota/4994397/llegada-papa-francisco-ha-inspirado-estas-canciones
+21h48
+
+
+'ascii' codec can't encode character u'\xf1' in position 4: ordinal not in range(128)
+'ascii' codec can't encode character u'\xed' in position 38: ordinal not in range(128)
+Incendios forestales en provincias
+http://www.eluniverso.com/noticias/2015/06/30/nota/4993719/incendios-forestales-provincias
+21h48
+
+
+'ascii' codec can't encode character u'\xe1' in position 17: ordinal not in range(128)
+Isla Santa Fe, nueva casa de 201 tortugas
+http://www.eluniverso.com/noticias/2015/06/30/nota/4993707/isla-santa-fe-nueva-casa-201-tortugas
+21h48
+
+
+'ascii' codec can't encode character u'\xe1' in position 11: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 55: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 27: ordinal not in range(128)
+'ascii' codec can't encode character u'\xe1' in position 32: ordinal not in range(128)
+'ascii' codec can't encode character u'\xe1' in position 22: ordinal not in range(128)
+Bolivia declara festivo 9 de julio para facilitar asistencia a misa del papa Francisco
+http://www.eluniverso.com/noticias/2015/06/30/nota/4994547/bolivia-declara-festivo-9-julio-facilitar-asistencia-misa-papa
+21h48
+
+
+'ascii' codec can't encode character u'\xe1' in position 57: ordinal not in range(128)
+'ascii' codec can't encode character u'\xe1' in position 22: ordinal not in range(128)
+Gobernador de Nueva Jersey Chris Christie anuncia candidatura presidencial
+http://www.eluniverso.com/noticias/2015/06/30/nota/4994319/gobernador-nueva-jersey-chris-christie-anuncia-candidatura
+21h48
+
+
+'ascii' codec can't encode character u'\xe9' in position 3: ordinal not in range(128)
+'ascii' codec can't encode character u'\xfa' in position 1: ordinal not in range(128)
+'ascii' codec can't encode character u'\xf3' in position 20: ordinal not in range(128)
+Hombre en silla de ruedas asalta un banco en Nueva York 
+http://www.eluniverso.com/noticias/2015/06/30/nota/4994271/hombre-silla-ruedas-roba-banco-nueva-york
+21h48
+
+
+'ascii' codec can't encode character u'\xf3' in position 35: ordinal not in range(128)
+Carlos Slim cancela proyecto con Donald Trump tras insultos a mexicanos
+http://www.eluniverso.com/noticias/2015/06/30/nota/4994256/carlos-slim-cancela-proyecto-donald-trump-tras-insultos-mexicanos
+21h48
+
+
+11 of 29
+===================================================
+Jaime Nebot dice que ni es evasor ni se ha enriquecido en su cargo 1
+==========
+Topico: ===================================================
+Que Gina Godoy se disculpe con Quito pide Rodas 1
+==========
+Topico: ===================================================
+Bolivia declara festivo 9 de julio para facilitar asistencia a misa del papa Francisco 1
+==========
+Topico: Internacional 3
+==========
+Papa Francisco
+Evo Morales
+Misas
+Santa Cruz (Bolivia)
+==========
+===================================================
+Gobernador de Nueva Jersey Chris Christie anuncia candidatura presidencial 1
+==========
+Topico: Internacional 3
+==========
+===================================================
+Flexibilizar Ley de Herencias ofrece Rafael Correa 1
+==========
+Topico: ===================================================
+Llegada del papa Francisco ha inspirado estas canciones 1
+==========
+Topico: Ecuador 3
+==========
+Cantantes
+===================================================
+Carlos Slim cancela proyecto con Donald Trump tras insultos a mexicanos 1
+==========
+Topico: Internacional 3
+==========
+Donald Trump
+Carlos Slim
+Racismo
+===================================================
+Isla Santa Fe, nueva casa de 201 tortugas 1
+==========
+Topico: Ecuador 3
+==========
+Ministerio del Ambiente
+===================================================
+Incendios forestales en provincias 1
+==========
+Topico: Ecuador 3
+==========
+Incendios forestales en Ecuador
+ECUADOR
+==========
+===================================================
+Hombre en silla de ruedas asalta un banco en Nueva York  1
+==========
+Topico: Internacional 3
+==========
+Curiosidades
+Robos
+Asaltos
+Asaltos bancarios
+Estados Unidos
+==========
