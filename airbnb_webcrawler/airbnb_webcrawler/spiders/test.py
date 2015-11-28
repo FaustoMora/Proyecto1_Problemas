@@ -4,7 +4,7 @@ from airbnb_webcrawler.items import AirbnbWebcrawlerItem
 
 class MySpider(Spider):
 	name = "airbnb"
-	allowed_domains = ['https://www.airbnb.com.ec/']
+	allowed_domains = ['www.airbnb.com.ec']
 	start_urls = ['https://www.airbnb.com.ec/s/London--United-Kingdom?ss_id=vgev4c7y']
 
 	def parse(self, response):
@@ -43,8 +43,8 @@ class MySpider(Spider):
 					aux = p.xpath('span/text()').extract()[0]
 					parrafo.append(aux)
 
-				item2['data_descripcion'] = ' '.join(parrafo)
-				yield item2
+				item['data_descripcion'] = ' '.join(parrafo)
+				yield item
 
 
 
