@@ -1,4 +1,4 @@
-from scrapy import Spider
+from scrapy import Spider, Request
 from scrapy.selector import Selector
 from airbnb_webcrawler.items import AirbnbWebcrawlerItem
 
@@ -21,10 +21,30 @@ class MySpider(Spider):
 				item['data_lng'] = room.xpath('div[@class="listing"]/@data-lng').extract()[0]
 				link = room.xpath('div[@class="listing"]/@data-url').extract()[0]
 				item['data_url'] = room.xpath('div[@class="listing"]/@data-url').extract()[0]
-				
-				#impresiones
-				print 'name: ' + item['data_name']
-				print 'lat:' + item['data_lat'] + ' lng:' + item['data_lng']
+				print link
+				request = Request("https://www.airbnb.com.ec"+link ,callback=self.parse_model, meta={'item':item})
+				yield request
+
+
+	def parse_model(self, response):
+		print 'dentro de parse model'
+
+		inside_room = Selector(response).xpath('//div[@class="expandable-content expandable-content-long"]/div')
+
+		if inside_room:
+			for room in inside_room:
+				item = AirbnbWebcrawlerItem(response.meta["item"])
+
+				descripcion = room.xpath('p')
+				print 'aqui'
+
+				parrafo = []
+				for p in descripcion:
+					aux = p.xpath('span/text()').extract()[0]
+					parrafo.append(aux)
+
+				item2['data_descripcion'] = ' '.join(parrafo)
+				yield item2
 
 
 

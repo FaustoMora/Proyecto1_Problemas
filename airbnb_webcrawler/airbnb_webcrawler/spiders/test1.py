@@ -17,11 +17,12 @@ class MySpider(Spider):
 
 				descripcion = room.xpath('p')
 
+				parrafo = []
 				for p in descripcion:
-					parrafo = p.xpath('span/text()').extract()[0]
-					print 'descripcion - ' + parrafo
+					aux = p.xpath('span/text()').extract()[0]
+					parrafo.append(aux)
 
-					#item2['data_descripcion'] = item2['data_descripcion'] + '. ' + parrafo
-					#print item2['data_descripcion']
+				item2['data_descripcion'] = ' '.join(parrafo)
+				yield item2
 
 
