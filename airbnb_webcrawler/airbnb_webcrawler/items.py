@@ -11,6 +11,7 @@ from scrapy.item import Item, Field
 class AirbnbWebcrawlerItem(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    data_id = Field()
     data_name = Field()
     data_user = Field()
     data_lat = Field()
