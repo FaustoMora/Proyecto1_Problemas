@@ -8,8 +8,9 @@ def generar_urls():
 	urls=[]
 
 	for x in range(0,11):
-		url = 'https://www.airbnb.com.ec/s/London--United-Kingdom?price_min='+str(valor_min[x])+'&price_max='+str(valor_max[x])+'&ss_id=vgev4c7y'
-		urls.append(url)
+		for y in range(1,17):
+			url = 'https://www.airbnb.com.ec/s/London--United-Kingdom?price_min='+str(valor_min[x])+'&price_max='+str(valor_max[x])+'&ss_id=vgev4c7y&page='+str(y)
+			urls.append(url)
 
 	return urls
 
@@ -24,7 +25,7 @@ class MySpider(Spider):
 		rooms = Selector(response).xpath('//div[@class="col-sm-12 row-space-2 col-md-6"]')
 
 		if rooms:
-			i=0
+			
 			for room in rooms:
 				item = AirbnbWebcrawlerItem()
 
@@ -36,8 +37,6 @@ class MySpider(Spider):
 				link = room.xpath('div[@class="listing"]/@data-url').extract()[0]
 				item['data_url'] = room.xpath('div[@class="listing"]/@data-url').extract()[0]
 				request = Request("https://www.airbnb.com.ec"+link ,callback=self.parse_model, meta={'item':item})
-				i = i +1
-				print i
 				yield request
 
 
@@ -46,9 +45,16 @@ class MySpider(Spider):
 
 		inside_room = Selector(response).xpath('//div[@class="expandable-content expandable-content-long"]/div')
 
+		reviews_count = Selector(response).xpath('//h4[@class="text-center-sm col-middle col-md-12"]')
+
+		
 		if inside_room:
 			for room in inside_room:
 				item = AirbnbWebcrawlerItem(response.meta["item"])
+
+				if reviews_count:
+					count_review = reviews_count.xpath('span/text()').extract()[0]
+					item['data_review_count']=count_review
 
 				descripcion = room.xpath('p')
 
@@ -60,8 +66,8 @@ class MySpider(Spider):
 				item['data_descripcion'] = ' '.join(parrafo)
 				yield item
 
-	def parse_users(self,response):
-		print 'dentro de los usuarios'
+
+
 
 
 

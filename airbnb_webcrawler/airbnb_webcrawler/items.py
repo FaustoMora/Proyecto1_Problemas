@@ -18,5 +18,6 @@ class AirbnbWebcrawlerItem(Item):
     data_lng = Field()
     data_url = Field()
     data_descripcion = Field()
+    data_review_count = Field()
 
     

@@ -22,16 +22,12 @@ class MySpider(Spider):
 		#			aux = p.xpath('span/text()').extract()[0]
 		#			parrafo.append(aux)
 
-		reviews_room = Selector(response).xpath('//div[@class="row review"]')
-		print len(reviews_room)
-		
-		if reviews_room:
-			for review in reviews_room:
-				print review.xpath('a[@class="media-photo media-round"]/@href').extract()[0]		
-		else:
-			print 'no reviews_room'
+		reviews_count = Selector(response).xpath('//h4[@class="text-center-sm col-middle col-md-12"]')
 
-		#item2['data_descripcion'] = ' '.join(parrafo)
-		yield item2
+		if reviews_count:
+			count_review = reviews_count.xpath('span/text()').extract()[0]
+			print count_review
+		else:
+			print 'no reviews'
 
 
