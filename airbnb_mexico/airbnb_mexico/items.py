@@ -29,7 +29,5 @@ class AirbnbMexicoItem(scrapy.Item):
     servicios = scrapy.Field()
     descripcion = scrapy.Field()
     reglas = scrapy.Field()
-    reglas_seguridad = scrapy.Field()
-    disponibilidad  = scrapy.Field()
     reviews = scrapy.Field()
     pass

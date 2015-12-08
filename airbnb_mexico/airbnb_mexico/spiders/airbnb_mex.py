@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
+
+from pyvirtualdisplay import Display
+
+
 import scrapy
 from scrapy.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.http import Request
 from selenium import webdriver
+from scrapy.linkextractors import LinkExtractor
 from airbnb_mexico.items import AirbnbMexicoItem
+from selenium.webdriver import DesiredCapabilities
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class AirbnbMexSpider(scrapy.Spider):
@@ -12,9 +19,16 @@ class AirbnbMexSpider(scrapy.Spider):
     start_urls = (
         'http://www.airbnb.com/s/mexico',
     )
-    extract_rooms = SgmlLinkExtractor(allow=r'/rooms/\d+')
-    extract_pages = SgmlLinkExtractor(allow=r'/s/mexico\?page=\d+')
+    extract_rooms = LinkExtractor(allow=r'/rooms/\d+')
+    extract_pages = LinkExtractor(allow=r'/s/mexico\?page=\d+',restrict_xpaths='//li[@class="next next_page"]')
 
+    def __init__(self):
+        user_agent = (
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36'
+        )
+        dcap = dict(DesiredCapabilities.PHANTOMJS)
+        dcap["phantomjs.page.settings.userAgent"] = user_agent
+        self.driver = webdriver.Firefox()
 
 
     def parse(self, response):
@@ -25,24 +39,95 @@ class AirbnbMexSpider(scrapy.Spider):
     #a = Request('https://www.airbnb.com/api/v2/reviews?key=d306zoyjsyarp7ifhu67rjxn52tv0t20&currency=USD&locale=es&listing_id=2701524&role=guest&_format=for_p3&_limit=50&_offset=14&_order=language')
 
     def parse_room(self,response):
+        self.driver.get(response.url)
+        #mores = self.driver.find_element_by_class_name()
+        mores = self.driver.find_elements_by_class_name('expandable-trigger-more')
+        for m in mores:
+            m.click()
         item = AirbnbMexicoItem()
-        item['id'] = response.url.split('/')[-1].split('?')[0]
-        item['latitud'] = response.xpath('/html/head/meta[18]/@content').extract()[0]
-        item['longitud'] = response.xpath('/html/head/meta[19]/@content').extract()[0]
-        item['nombre']=response.xpath('//title/text()').extract()[0]
-        item['ubicacion']=response.xpath('//div[@id="display-address"]/a[1]/text()').extract()[0]
-        item['costo']=response.xpath('//div[@class="book-it__price js-price"]/div[@class="book-it__price-amount js-book-it-price-amount pull-left h3 text-special"]/text()').extract()[0].strip().replace('$','')
-        item['acomodados']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Accommodates")]/text()').extract()[0]
-        item['banios']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bathrooms")]/text()').extract()[0]
-        item['cama_tipo']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bed t")]/text()').extract()[0]
-        item['cuartos']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bedrooms")]/text()').extract()[0]
-        item['camas']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Beds")]/text()').extract()[0]
-        item['check_in']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Check In")]/text()').extract()[0]
-        item['check_out']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Check Out")]/text()').extract()[0]
-        item['tipo_propiedad']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Property type")]/text()').extract()[0]
-        item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0]
+        try:
+            item['id'] = response.url.split('/')[-1].split('?')[0]
+        except:
+            item['id'] = ""
+        try:
+            item['latitud'] = response.xpath('/html/head/meta[18]/@content').extract()[0]
+        except:
+            item['latitud']=""
+        try:
+            item['longitud'] = response.xpath('/html/head/meta[19]/@content').extract()[0]
+        except:
+            item['longitud']
+        try:
+            item['nombre']=response.xpath('//title/text()').extract()[0]
+        except:
+            item['nombre']=""
+        try:
+            item['ubicacion']=response.xpath('//div[@id="display-address"]/a[1]/text()').extract()[0]
+        except:
+            item['ubicacion']=""
+        try:
+            item['costo']=response.xpath('//div[@class="book-it__price js-price"]/div[@class="book-it__price-amount js-book-it-price-amount pull-left h3 text-special"]/text()').extract()[0].strip().replace('$','')
+        except:
+            item['costo']=""
+        try:
+            item['acomodados']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Accommodates")]/text()').extract()[0]
+        except:
+            item['acomodados']=""
+        try:
+            item['banios']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bathrooms")]/text()').extract()[0]
+        except:
+            item['banios']=""
+        try:
+            item['cama_tipo']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bed t")]/text()').extract()[0]
+        except:
+            item['cama_tipo']=""
+        try:
+            item['cuartos']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bedrooms")]/text()').extract()[0]
+        except:
+            item['cuartos']=""
+        try:
+            item['camas']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Beds")]/text()').extract()[0]
+        except:
+            item['camas']=""
+        try:
+            item['check_in']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Check In")]/text()').extract()[0]
+        except:
+            item['check_in']=""
+        try:
+            item['check_out']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Check Out")]/text()').extract()[0]
+        except:
+            item['check_out']=""
+        try:
+            item['tipo_propiedad']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Property type")]/text()').extract()[0]
+        except:
+            item['tipo_propiedad']=""
+        try:
+            item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0]
+        except:
+            item['tipo_habitacion']
         #item['servicios']=';'.join(response.xpath('//div[@class="row"]//div[@class="space-1"]/span[2]/text()').extract())
+        servicios = self.driver.find_elements_by_xpath('//div[@class="row"]//div[@class="space-1"]//strong')
+        item['servicios'] = []
+        for s in servicios:
+            item['servicios'].append(s.text)
+        item['servicios'] = ';'.join(item['servicios'])
+        item['descripcion'] = '\n'.join(response.xpath('//div[@class="react-expandable"]/div[@class="expandable-content expandable-content-long"]//p/span/text()').extract())
+        item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
+        reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
+        item['reviews']=[]
+        for r in reviews_pages:
+            r.click()
+            self.driver.implicitly_wait(3)
+            reviews = self.driver.find_elements_by_xpath('//div[@class="review-text"]//p')
+            for rev in reviews:
+                item['reviews'].append(rev.text)
 
 
-    def parse_room_servicios(self,response):
-        item = response.meta['item']
+
+        item['reviews'] = '\n'.join(item['reviews'])
+
+
+        print item['reviews']
+
+
+
