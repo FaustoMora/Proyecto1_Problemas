@@ -3,16 +3,29 @@ from scrapy.selector import Selector
 from airbnb_webcrawler.items import AirbnbWebcrawlerItem
 
 def generar_urls():
-	rango_1 = [i for i in range(10,459)]
-	rango_20 = [i for i in range(460,1001,10)]
-	valores = rango_1
-	valores.extend(rango_20)
+	rango_1 = [i for i in range(10,460)]
+	rango_20 = [i for i in range(460,1000,10)]
 
+	valores_maximos=[]
+	valores_minimos=[]
+
+	for x in range(0,len(rango_1)):
+		if x%2==0:
+			valores_maximos.append(rango_1[x+1])
+		else:
+			valores_minimos.append(rango_1[x-1])
+
+	for x in range(0,len(rango_20)):
+		valores_minimos.append(rango_20[x])
+		if rango_20[x] != 460:
+			valores_maximos.append(rango_20[x]-1)
+	        
+	valores_maximos.append(1000)
 	urls=[]
 
-	for x in valores:
-		for y in range(1,17):
-			url = 'https://www.airbnb.com.ec/s/uk?price_min='+str(x)+'&price_max='+str(x+1)+'&ss_id=vgev4c7y&page='+str(y)
+	for x in range(0,len(valores_maximos)):
+		for y in range(1,18):
+			url = 'https://www.airbnb.com.ec/s/uk?price_min='+str(valores_minimos[x])+'&price_max='+str(valores_maximos[x])+'&ss_id=vgev4c7y&page='+str(y)
 			urls.append(url)
 
 	return urls
