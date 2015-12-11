@@ -44,7 +44,7 @@ class AirbnbUKSpider(scrapy.Spider):
     name = "airbnb-uk"
     allowed_domains = ["airbnb.com","www.airbnb.com"]
     start_urls = generar_urls()
-    
+
     extract_rooms = LinkExtractor(allow=r'/rooms/\d+')
     extract_pages = LinkExtractor(allow=r'/s/uk\?page=\d+',restrict_xpaths='//li[@class="next next_page"]')
 
