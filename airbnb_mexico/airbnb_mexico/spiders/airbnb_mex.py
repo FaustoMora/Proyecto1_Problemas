@@ -127,7 +127,7 @@ class AirbnbMexSpider(scrapy.Spider):
         item['reviews'] = '\n'.join(item['reviews'])
 
 
-        print item['reviews']
+        yield
 
 
 

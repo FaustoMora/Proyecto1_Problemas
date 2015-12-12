@@ -35,7 +35,7 @@ def generar_urls():
 
     for x in range(0,len(valores_maximos)):
         for y in range(1,18):
-            url = 'https://www.airbnb.com.ec/s/uk?price_min='+str(valores_minimos[x])+'&price_max='+str(valores_maximos[x])+'&ss_id=vgev4c7y&page='+str(y)
+            url = 'http://www.airbnb.com/s/uk?price_min='+str(valores_minimos[x])+'&price_max='+str(valores_maximos[x])+'&page='+str(y)+'&ss_id=vgev4c7y'
             urls.append(url)
 
     return urls
@@ -54,7 +54,7 @@ class AirbnbUKSpider(scrapy.Spider):
         )
         dcap = dict(DesiredCapabilities.PHANTOMJS)
         dcap["phantomjs.page.settings.userAgent"] = user_agent
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.PhantomJS()
 
 
     def parse(self, response):
@@ -153,7 +153,7 @@ class AirbnbUKSpider(scrapy.Spider):
         item['reviews'] = '\n'.join(item['reviews'])
 
 
-        print item['reviews']
+        yield item
 
 
 

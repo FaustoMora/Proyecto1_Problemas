@@ -43,4 +43,3 @@ class AirbnbUKItem(Item):
     descripcion = Field()
     reglas = Field()
     reviews = Field()
-    pass
