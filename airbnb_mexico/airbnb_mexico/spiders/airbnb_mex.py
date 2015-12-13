@@ -18,6 +18,7 @@ def quitarCommas(text):
 
 class AirbnbMexSpider(scrapy.Spider):
     name = "airbnb-mex"
+    download_delay = 5
     allowed_domains = ["airbnb.com","www.airbnb.com"]
     start_urls = (
         'http://www.airbnb.com/s/mexico',
