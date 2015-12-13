@@ -30,4 +30,4 @@ class AirbnbMexicoItem(scrapy.Item):
     descripcion = scrapy.Field()
     reglas = scrapy.Field()
     reviews = scrapy.Field()
-    pass
+

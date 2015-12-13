@@ -12,6 +12,11 @@ from airbnb_webcrawler.items import AirbnbUKItem
 from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.support.wait import WebDriverWait
 
+
+def quitarCommas(text):
+    return text.decode("utf-8").replace(u"\u002C", u"\u002E").encode("utf-8")
+
+
 def generar_urls():
     rango_1 = [i for i in range(10,460)]
     rango_20 = [i for i in range(460,1000,10)]
@@ -39,6 +44,7 @@ def generar_urls():
             urls.append(url)
 
     return urls
+    
 
 class AirbnbUKSpider(scrapy.Spider):
     name = "airbnb-uk"
@@ -131,14 +137,17 @@ class AirbnbUKSpider(scrapy.Spider):
             item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0]
         except:
             item['tipo_habitacion']
-        #item['servicios']=';'.join(response.xpath('//div[@class="row"]//div[@class="space-1"]/span[2]/text()').extract())
+
+
         servicios = self.driver.find_elements_by_xpath('//div[@class="row"]//div[@class="space-1"]//strong')
         item['servicios'] = []
         for s in servicios:
-            item['servicios'].append(s.text)
+            item['servicios'].append(quitarCommas(s.text))
+
         item['servicios'] = ';'.join(item['servicios'])
         item['descripcion'] = '\n'.join(response.xpath('//div[@class="react-expandable"]/div[@class="expandable-content expandable-content-long"]//p/span/text()').extract())
         item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
+
         reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
         item['reviews']=[]
         for r in reviews_pages:
@@ -146,14 +155,15 @@ class AirbnbUKSpider(scrapy.Spider):
             self.driver.implicitly_wait(3)
             reviews = self.driver.find_elements_by_xpath('//div[@class="review-text"]//p')
             for rev in reviews:
-                item['reviews'].append(rev.text)
+                item['reviews'].append(quitarCommas(rev.text))
 
 
 
         item['reviews'] = '\n'.join(item['reviews'])
-
-
-        yield item
+        item['descripcion'] = quitarCommas(item['descripcion'])
+        item['reglas'] = quitarCommas(item['reglas'])
+        
+        yield
 
 
 

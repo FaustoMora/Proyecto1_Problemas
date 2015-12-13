@@ -12,6 +12,9 @@ from airbnb_mexico.items import AirbnbMexicoItem
 from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.support.wait import WebDriverWait
 
+def quitarCommas(text):
+    return text.decode("utf-8").replace(u"\u002C", u"\u002E").encode("utf-8")
+
 
 class AirbnbMexSpider(scrapy.Spider):
     name = "airbnb-mex"
@@ -109,10 +112,12 @@ class AirbnbMexSpider(scrapy.Spider):
         servicios = self.driver.find_elements_by_xpath('//div[@class="row"]//div[@class="space-1"]//strong')
         item['servicios'] = []
         for s in servicios:
-            item['servicios'].append(s.text)
+            item['servicios'].append(quitarCommas(s.text))
+
         item['servicios'] = ';'.join(item['servicios'])
         item['descripcion'] = '\n'.join(response.xpath('//div[@class="react-expandable"]/div[@class="expandable-content expandable-content-long"]//p/span/text()').extract())
         item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
+
         reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
         item['reviews']=[]
         for r in reviews_pages:
@@ -120,12 +125,13 @@ class AirbnbMexSpider(scrapy.Spider):
             self.driver.implicitly_wait(3)
             reviews = self.driver.find_elements_by_xpath('//div[@class="review-text"]//p')
             for rev in reviews:
-                item['reviews'].append(rev.text)
+                item['reviews'].append(quitarCommas(rev.text))
 
 
 
         item['reviews'] = '\n'.join(item['reviews'])
-
+        item['descripcion'] = quitarCommas(item['descripcion'])
+        item['reglas'] = quitarCommas(item['reglas'])
 
         yield
 
