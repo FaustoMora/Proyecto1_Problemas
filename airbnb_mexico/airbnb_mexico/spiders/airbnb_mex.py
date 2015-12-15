@@ -15,14 +15,41 @@ from selenium.webdriver.support.wait import WebDriverWait
 def quitarCommas(text):
     return text.decode("utf-8").replace(u"\u002C", u"\u002E").encode("utf-8")
 
+def generar_urls():
+    rango_1 = [i for i in range(10,460)]
+    rango_20 = [i for i in range(460,1000,10)]
+
+    valores_maximos=[]
+    valores_minimos=[]
+
+    for x in range(0,len(rango_1)):
+        if x%2==0:
+            valores_maximos.append(rango_1[x+1])
+        else:
+            valores_minimos.append(rango_1[x-1])
+
+    for x in range(0,len(rango_20)):
+        valores_minimos.append(rango_20[x])
+        if rango_20[x] != 460:
+            valores_maximos.append(rango_20[x]-1)
+            
+    valores_maximos.append(1000)
+    urls=[]
+
+    for x in range(0,len(valores_maximos)):
+        for y in range(1,18):
+            url = 'http://www.airbnb.com/s/mexico?price_min='+str(valores_minimos[x])+'&price_max='+str(valores_maximos[x])+'&page='+str(y)+'&ss_id=pp5dwaol'
+            urls.append(url)
+
+    return urls
+
 
 class AirbnbMexSpider(scrapy.Spider):
     name = "airbnb-mex"
     download_delay = 5
     allowed_domains = ["airbnb.com","www.airbnb.com"]
-    start_urls = (
-        'http://www.airbnb.com/s/mexico',
-    )
+    start_urls = generar_urls()
+
     extract_rooms = LinkExtractor(allow=r'/rooms/\d+')
     extract_pages = LinkExtractor(allow=r'/s/mexico\?page=\d+',restrict_xpaths='//li[@class="next next_page"]')
 
