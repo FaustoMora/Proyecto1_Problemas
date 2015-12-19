@@ -80,19 +80,21 @@ class AirbnbUKSpider(scrapy.Spider):
         except:
             item['id'] = ""
         try:
-            item['latitud'] = response.xpath('/html/head/meta[18]/@content').extract()[0]
+            item['latitud'] = response.xpath('/html/head/meta[@property="airbedandbreakfast:location:latitude"]/@content').extract()[0]
         except:
-            item['latitud']=""
+            item['latitud']="no"
         try:
-            item['longitud'] = response.xpath('/html/head/meta[19]/@content').extract()[0]
+            item['longitud'] = response.xpath('/html/head/meta[@property="airbedandbreakfast:location:longitude"]/@content').extract()[0]
         except:
-            item['longitud']
+            item['longitud']="no"
         try:
-            item['nombre']=response.xpath('//title/text()').extract()[0].replace(',',' ')
+            item['nombre']=response.xpath('//title/text()').extract()[0]
+            item['nombre']=quitarCommas(item['nombre'])
         except:
             item['nombre']=""
         try:
-            item['ubicacion']=response.xpath('//div[@id="display-address"]/a[1]/text()').extract()[0].replace(',',' ')
+            item['ubicacion']=response.xpath('//div[@id="display-address"]/a[1]/text()').extract()[0]
+            item['ubicacion']=quitarCommas(item['ubicacion'])
         except:
             item['ubicacion']=""
         try:
@@ -128,11 +130,13 @@ class AirbnbUKSpider(scrapy.Spider):
         except:
             item['check_out']=""
         try:
-            item['tipo_propiedad']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Property type")]/text()').extract()[0].replace(',',' ')
+            item['tipo_propiedad']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Property type")]/text()').extract()[0]
+            item['tipo_propiedad']=quitarCommas(item['tipo_propiedad'])
         except:
             item['tipo_propiedad']=""
         try:
-            item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0].replace(',',' ')
+            item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0]
+            item['tipo_habitacion']=quitarCommas(item['tipo_habitacion'])
         except:
             item['tipo_habitacion']
 
@@ -144,7 +148,9 @@ class AirbnbUKSpider(scrapy.Spider):
 
         item['servicios'] = ';'.join(item['servicios'])
         item['descripcion'] = '\n'.join(response.xpath('//div[@class="react-expandable"]/div[@class="expandable-content expandable-content-long"]//p/span/text()').extract())
-        item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract().replace(',',' '))
+        item['descripcion'] = quitarCommas(item['descripcion'])
+        item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
+        item['reglas'] = quitarCommas(item['reglas'])
 
         reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
         item['reviews']=[]
@@ -161,7 +167,7 @@ class AirbnbUKSpider(scrapy.Spider):
         item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = quitarCommas(item['reglas'])
         
-        yield
+        yield item
 
 
 

@@ -13,7 +13,7 @@ from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.support.wait import WebDriverWait
 
 def quitarCommas(text):
-    return text.decode("utf-8").replace(u"\u002C", u"\u002E").encode("utf-8")
+    return text.replace(",", ".")
 
 def generar_urls():
     rango_1 = [i for i in range(10,460)]
@@ -59,7 +59,7 @@ class AirbnbMexSpider(scrapy.Spider):
         )
         dcap = dict(DesiredCapabilities.PHANTOMJS)
         dcap["phantomjs.page.settings.userAgent"] = user_agent
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.PhantomJS()
 
 
     def parse(self, response):
@@ -81,13 +81,13 @@ class AirbnbMexSpider(scrapy.Spider):
         except:
             item['id'] = ""
         try:
-            item['latitud'] = response.xpath('/html/head/meta[18]/@content').extract()[0]
+            item['latitud'] = response.xpath('/html/head/meta[@property="airbedandbreakfast:location:latitude"]/@content').extract()[0]
         except:
-            item['latitud']=""
+            item['latitud']="no"
         try:
-            item['longitud'] = response.xpath('/html/head/meta[19]/@content').extract()[0]
+            item['longitud'] = response.xpath('/html/head/meta[@property="airbedandbreakfast:location:longitude"]/@content').extract()[0]
         except:
-            item['longitud']
+            item['longitud']="no"
         try:
             item['nombre']=response.xpath('//title/text()').extract()[0]
         except:
@@ -161,7 +161,7 @@ class AirbnbMexSpider(scrapy.Spider):
         item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = quitarCommas(item['reglas'])
 
-        yield
+        yield item
 
 
 
