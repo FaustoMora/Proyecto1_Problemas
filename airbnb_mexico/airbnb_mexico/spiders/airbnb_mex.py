@@ -90,10 +90,12 @@ class AirbnbMexSpider(scrapy.Spider):
             item['longitud']="no"
         try:
             item['nombre']=response.xpath('//title/text()').extract()[0]
+            item['nombre']=quitarCommas(item['nombre'])
         except:
             item['nombre']=""
         try:
             item['ubicacion']=response.xpath('//div[@id="display-address"]/a[1]/text()').extract()[0]
+            item['ubicacion']=quitarCommas(item['ubicacion'])
         except:
             item['ubicacion']=""
         try:
@@ -102,49 +104,62 @@ class AirbnbMexSpider(scrapy.Spider):
             item['costo']=""
         try:
             item['acomodados']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Accommodates")]/text()').extract()[0]
+            item['acomodados']=quitarCommas(item['acomodados'])
         except:
             item['acomodados']=""
         try:
             item['banios']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bathrooms")]/text()').extract()[0]
+            item['banios']=quitarCommas(item['banios'])
         except:
             item['banios']=""
         try:
             item['cama_tipo']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bed t")]/text()').extract()[0]
+            item['cama_tipo']=quitarCommas(item['cama_tipo'])
         except:
             item['cama_tipo']=""
         try:
             item['cuartos']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Bedrooms")]/text()').extract()[0]
+            item['cuartos']=quitarCommas(item['cuartos'])
         except:
             item['cuartos']=""
         try:
             item['camas']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Beds")]/text()').extract()[0]
+            item['camas']=quitarCommas(item['camas'])
         except:
             item['camas']=""
         try:
             item['check_in']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Check In")]/text()').extract()[0]
+            item['check_in']=quitarCommas(item['check_in'])
         except:
             item['check_in']=""
         try:
             item['check_out']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Check Out")]/text()').extract()[0]
+            item['check_out']=quitarCommas(item['check_out'])
         except:
             item['check_out']=""
         try:
             item['tipo_propiedad']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Property type")]/text()').extract()[0]
+            item['tipo_propiedad']=quitarCommas(item['tipo_propiedad'])
         except:
             item['tipo_propiedad']=""
         try:
             item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0]
+            item['tipo_habitacion']=quitarCommas(item['tipo_habitacion'])
         except:
             item['tipo_habitacion']
-        #item['servicios']=';'.join(response.xpath('//div[@class="row"]//div[@class="space-1"]/span[2]/text()').extract())
+
+
         servicios = self.driver.find_elements_by_xpath('//div[@class="row"]//div[@class="space-1"]//strong')
         item['servicios'] = []
         for s in servicios:
             item['servicios'].append(quitarCommas(s.text))
 
-        item['servicios'] = ';'.join(item['servicios'])
+        item['servicios'] = '.'.join(item['servicios'])
+        item['servicios'] = quitarCommas(item['servicios'])
         item['descripcion'] = '\n'.join(response.xpath('//div[@class="react-expandable"]/div[@class="expandable-content expandable-content-long"]//p/span/text()').extract())
+        item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
+        item['reglas'] = quitarCommas(item['reglas'])
 
         reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
         item['reviews']=[]
