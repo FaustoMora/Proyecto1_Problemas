@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from pyvirtualdisplay import Display
-
-
 import scrapy
 from scrapy.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.http import Request
@@ -91,11 +88,11 @@ class AirbnbUKSpider(scrapy.Spider):
         except:
             item['longitud']
         try:
-            item['nombre']=response.xpath('//title/text()').extract()[0]
+            item['nombre']=response.xpath('//title/text()').extract()[0].replace(',',' ')
         except:
             item['nombre']=""
         try:
-            item['ubicacion']=response.xpath('//div[@id="display-address"]/a[1]/text()').extract()[0]
+            item['ubicacion']=response.xpath('//div[@id="display-address"]/a[1]/text()').extract()[0].replace(',',' ')
         except:
             item['ubicacion']=""
         try:
@@ -131,11 +128,11 @@ class AirbnbUKSpider(scrapy.Spider):
         except:
             item['check_out']=""
         try:
-            item['tipo_propiedad']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Property type")]/text()').extract()[0]
+            item['tipo_propiedad']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Property type")]/text()').extract()[0].replace(',',' ')
         except:
             item['tipo_propiedad']=""
         try:
-            item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0]
+            item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0].replace(',',' ')
         except:
             item['tipo_habitacion']
 
@@ -147,7 +144,7 @@ class AirbnbUKSpider(scrapy.Spider):
 
         item['servicios'] = ';'.join(item['servicios'])
         item['descripcion'] = '\n'.join(response.xpath('//div[@class="react-expandable"]/div[@class="expandable-content expandable-content-long"]//p/span/text()').extract())
-        item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
+        item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract().replace(',',' '))
 
         reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
         item['reviews']=[]
