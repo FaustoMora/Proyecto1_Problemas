@@ -161,7 +161,7 @@ class AirbnbMexSpider(scrapy.Spider):
         item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = quitarCommas(item['reglas'])
 
-        yield
+        yield item
 
 
 
