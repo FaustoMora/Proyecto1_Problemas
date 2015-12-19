@@ -144,7 +144,7 @@ class AirbnbUKSpider(scrapy.Spider):
 
         item['servicios'] = ';'.join(item['servicios'])
         item['descripcion'] = '\n'.join(response.xpath('//div[@class="react-expandable"]/div[@class="expandable-content expandable-content-long"]//p/span/text()').extract())
-        item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract().replace(',',' '))
+        item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
 
         reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
         item['reviews']=[]
