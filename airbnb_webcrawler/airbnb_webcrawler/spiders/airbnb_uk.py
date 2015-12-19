@@ -14,8 +14,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 def quitarCommas(text):
-    return text.decode("utf-8").replace(u"\u002C", u"\u002E").encode("utf-8")
-
+    #return text.decode("utf-8").replace(u"\u002C", u"\u002E").encode("utf-8")
+    return text.replace(",", ".")
 
 def generar_urls():
     rango_1 = [i for i in range(10,460)]
