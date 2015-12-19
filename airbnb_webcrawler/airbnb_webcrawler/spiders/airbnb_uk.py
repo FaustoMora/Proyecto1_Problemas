@@ -160,6 +160,7 @@ class AirbnbUKSpider(scrapy.Spider):
         item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
         item['reglas'] = quitarCommas(item['reglas'])
 
+
         reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
         item['reviews']=[]
         for r in reviews_pages:
