@@ -12,6 +12,7 @@ class AirbnbMexicoItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     id = scrapy.Field()
+    nro_reviews = scrapy.Field()
     latitud = scrapy.Field()
     longitud = scrapy.Field()
     nombre = scrapy.Field()
