@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 from pyvirtualdisplay import Display
 
@@ -63,7 +64,8 @@ class AirbnbMexSpider(scrapy.Spider):
         )
         self.dcap = dict(DesiredCapabilities.PHANTOMJS)
         self.dcap["phantomjs.page.settings.userAgent"] = user_agent
-        #self.driver = webdriver.PhantomJS(desired_capabilities=dcap)
+        self.driver = None
+
 
 
     def parse(self, response):
@@ -204,7 +206,9 @@ class AirbnbMexSpider(scrapy.Spider):
         item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = quitarCommas(item['reglas'])
 
-        self.driver.close()
+        self.driver.quit()
+        os.system('killall -9 phantomjs')
+
         yield item
 
 

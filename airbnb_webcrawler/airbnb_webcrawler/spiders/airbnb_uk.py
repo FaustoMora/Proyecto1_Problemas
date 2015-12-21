@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 import scrapy
 from scrapy.linkextractors.sgml import SgmlLinkExtractor
@@ -58,9 +59,9 @@ class AirbnbUKSpider(scrapy.Spider):
         user_agent = (
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36'
         )
-        dcap = dict(DesiredCapabilities.PHANTOMJS)
-        dcap["phantomjs.page.settings.userAgent"] = user_agent
-        self.driver = webdriver.PhantomJS()
+        self.dcap = dict(DesiredCapabilities.PHANTOMJS)
+        self.dcap["phantomjs.page.settings.userAgent"] = user_agent
+        self.driver = None
 
 
     def parse(self, response):
@@ -201,7 +202,8 @@ class AirbnbUKSpider(scrapy.Spider):
         item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = quitarCommas(item['reglas'])
 
-        self.driver.close()
+        self.driver.quit()
+        os.system('killall -9 phantomjs')
         yield item
 
 
