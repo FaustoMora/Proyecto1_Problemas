@@ -25,6 +25,7 @@ class AirbnbUKItem(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     id = Field()
+    nro_reviews = Field()
     latitud = Field()
     longitud = Field()
     nombre = Field()
@@ -43,3 +44,4 @@ class AirbnbUKItem(Item):
     descripcion = Field()
     reglas = Field()
     reviews = Field()
+

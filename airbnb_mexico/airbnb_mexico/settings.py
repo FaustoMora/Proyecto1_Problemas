@@ -8,7 +8,7 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-from pyvirtualdisplay import Display
+
 
 BOT_NAME = 'airbnb_mexico'
 
@@ -84,6 +84,3 @@ NEWSPIDER_MODULE = 'airbnb_mexico.spiders'
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
-display = Display(visible=0,size=(800,600))
-display.start()
-display.stop()

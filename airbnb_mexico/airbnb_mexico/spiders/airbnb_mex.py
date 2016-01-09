@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 from pyvirtualdisplay import Display
 
@@ -10,7 +11,11 @@ from selenium import webdriver
 from scrapy.linkextractors import LinkExtractor
 from airbnb_mexico.items import AirbnbMexicoItem
 from selenium.webdriver import DesiredCapabilities
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+import time
+
 
 def quitarCommas(text):
     return text.replace(",", ".")
@@ -57,9 +62,10 @@ class AirbnbMexSpider(scrapy.Spider):
         user_agent = (
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36'
         )
-        dcap = dict(DesiredCapabilities.PHANTOMJS)
-        dcap["phantomjs.page.settings.userAgent"] = user_agent
-        self.driver = webdriver.PhantomJS()
+        self.dcap = dict(DesiredCapabilities.PHANTOMJS)
+        self.dcap["phantomjs.page.settings.userAgent"] = user_agent
+        self.driver = None
+
 
 
     def parse(self, response):
@@ -70,11 +76,15 @@ class AirbnbMexSpider(scrapy.Spider):
     #a = Request('https://www.airbnb.com/api/v2/reviews?key=d306zoyjsyarp7ifhu67rjxn52tv0t20&currency=USD&locale=es&listing_id=2701524&role=guest&_format=for_p3&_limit=50&_offset=14&_order=language')
 
     def parse_room(self,response):
+        self.driver = webdriver.PhantomJS(desired_capabilities=self.dcap)
         self.driver.get(response.url)
+        time.sleep(3)
+
         #mores = self.driver.find_element_by_class_name()
         mores = self.driver.find_elements_by_class_name('expandable-trigger-more')
         for m in mores:
             m.click()
+            time.sleep(1)
         item = AirbnbMexicoItem()
         try:
             item['id'] = response.url.split('/')[-1].split('?')[0]
@@ -146,7 +156,11 @@ class AirbnbMexSpider(scrapy.Spider):
             item['tipo_habitacion']=response.xpath('//div[@class="row"]/div[@class="col-md-9"]/div[@class="row"]//strong[contains(@data-reactid,"Room type")]/text()').extract()[0]
             item['tipo_habitacion']=quitarCommas(item['tipo_habitacion'])
         except:
-            item['tipo_habitacion']
+            item['tipo_habitacion']=""
+        try:
+            item['nro_reviews'] = int(response.xpath('//div[@class="review-wrapper"]//h4/span/text()').extract()[0].split(" ")[0])
+        except:
+            item['nro_reviews'] = ""
 
 
         servicios = self.driver.find_elements_by_xpath('//div[@class="row"]//div[@class="space-1"]//strong')
@@ -161,14 +175,30 @@ class AirbnbMexSpider(scrapy.Spider):
         item['reglas'] = '\n'.join(response.xpath('//div[@id="house-rules"]//p/span/text()').extract())
         item['reglas'] = quitarCommas(item['reglas'])
 
-        reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
+
+        # reviews_pages = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class!="next next_page"]/a')
+
+        # for r in reviews_pages:
+        #     r.click()
+        #     self.driver.implicitly_wait(3)
+        #     reviews = self.driver.find_elements_by_xpath('//div[@class="review-text"]//p')
+        #     for rev in reviews:
+        #         item['reviews'].append(quitarCommas(rev.text))
         item['reviews']=[]
-        for r in reviews_pages:
-            r.click()
-            self.driver.implicitly_wait(3)
+        review_next = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class="next next_page"]/a')
+        while review_next != None:
             reviews = self.driver.find_elements_by_xpath('//div[@class="review-text"]//p')
             for rev in reviews:
                 item['reviews'].append(quitarCommas(rev.text))
+            try:
+                review_next[0].click()
+                time.sleep(2)
+                review_next = self.driver.find_elements_by_xpath('//div[@class="pagination pagination-responsive"]//li[@class="next next_page"]/a')
+            except:
+                review_next=None
+
+
+
 
 
 
@@ -176,7 +206,9 @@ class AirbnbMexSpider(scrapy.Spider):
         item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = quitarCommas(item['reglas'])
 
-        yield item
+        self.driver.quit()
+        os.system('killall -9 phantomjs')
 
+        yield item
 
 
