@@ -46,7 +46,7 @@ def generar_urls():
 
 class AirbnbMexSpider(scrapy.Spider):
     name = "airbnb-mex"
-    download_delay = 5
+    download_delay = 0.25
     allowed_domains = ["airbnb.com","www.airbnb.com"]
     start_urls = generar_urls()
 
@@ -172,7 +172,7 @@ class AirbnbMexSpider(scrapy.Spider):
 
 
 
-        item['reviews'] = '\n'.join(item['reviews'])
+        item['reviews'] = ' $$ '.join(item['reviews'])
         item['descripcion'] = quitarCommas(item['descripcion'])
         item['reglas'] = quitarCommas(item['reglas'])
 
